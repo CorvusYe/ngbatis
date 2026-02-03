@@ -21,9 +21,12 @@ import org.nebula.contrib.ngbatis.models.data.NgTriplet;
 import org.nebula.contrib.ngbatis.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ye.weicheng.ngbatis.demo.pojo.Employee;
 import ye.weicheng.ngbatis.demo.pojo.Like;
 import ye.weicheng.ngbatis.demo.pojo.LikeWithRank;
 import ye.weicheng.ngbatis.demo.pojo.Person;
+import ye.weicheng.ngbatis.demo.pojo.edge.Follow;
+import ye.weicheng.ngbatis.demo.pojo.vertex.Player;
 import ye.weicheng.ngbatis.demo.repository.TestRepository;
 
 /**
@@ -161,6 +164,7 @@ public class NebulaBasicDaoTests {
     Person person = new Person();
     person.setAge(20);
     person.setName("王小冰");
+    person.setGender(null);
     repository.insertSelective(person);
   }
 
@@ -205,6 +209,56 @@ public class NebulaBasicDaoTests {
     people.add(person3);
 
     repository.insertBatch(people);
+  }
+
+  @Test
+  public void insertSelectiveBatch() {
+    Person person1 = new Person();
+    person1.setName("IB111");
+    person1.setGender("M");
+    person1.setAge(null);
+
+    Person person2 = new Person();
+    person2.setName("IB222");
+    person2.setAge(18);
+    person2.setBirthday(new Date());
+
+    Person person3 = new Person();
+    person3.setName("IB333");
+    person3.setGender("M");
+    person3.setBirthday(new Date());
+
+    List<Person> people = new ArrayList<>();
+    people.add(person1);
+    people.add(person2);
+    people.add(person3);
+
+    repository.insertSelectiveBatch(people);
+  }
+
+  @Test
+  public void insertSelectiveBatchMultiTag() {
+    Employee employee1 = new Employee();
+    employee1.setName("职员1");
+    employee1.setGender("F");
+    employee1.setPosition("后端");
+
+    Employee employee2 = new Employee();
+    employee2.setName("职员2");
+    employee2.setGender("M");
+    employee2.setPosition("前端");
+
+    Employee employee3 = new Employee();
+    employee3.setName("职员3");
+    employee3.setGender("F");
+    employee3.setPosition("测试");
+
+    List<Employee> employees = new ArrayList<>();
+    employees.add(employee1);
+    employees.add(employee2);
+    employees.add(employee3);
+
+    repository.insertSelectiveBatch(employees);
   }
   // endregion
 
@@ -487,6 +541,37 @@ public class NebulaBasicDaoTests {
 
     repository.upsertEdgeSelective(person1, likeWithRank, person2);
   }
+  
+  @Test
+  public void updateEdgeByIdBatchSelective() {
+    Person p1 = new Person();
+    Person p2 = new Person();
+    
+    repository.insert(p1);
+    repository.insert(p2);
+
+    Follow p1FollowP2 = new Follow();
+    Follow p2FollowP1 = new Follow();
+    
+    repository.insertEdge(p1, p1FollowP2, p2);
+    repository.insertEdge(p2, p2FollowP1, p1);
+    
+    p1FollowP2.setSrcId(p1.getName());
+    p1FollowP2.setDstId(p2.getName());
+    
+    p2FollowP1.setSrcId(p2.getName());
+    p2FollowP1.setDstId(p1.getName());
+
+    List<Follow> follows = new ArrayList<>();
+    follows.add(p1FollowP2);
+    follows.add(p2FollowP1);
+    follows.forEach((l) -> l.setDegree(3));
+    
+    repository.updateEdgeByIdBatchSelective(follows);
+    
+    repository.deleteWithEdgeById(p1.getName());
+    repository.deleteWithEdgeById(p2.getName());
+  }
 
 
   @Test
@@ -503,8 +588,14 @@ public class NebulaBasicDaoTests {
 
   @Test
   public void listEndNodes() {
-    List<Person> personList = repository.listEndNodes("易小海", Like.class);
+    List<Person> personList = repository.listEndNodes("叶小南", Like.class);
     System.out.println(JSON.toJSONString(personList));
+  }
+
+  @Test
+  public void listEndNodesPlayer() {
+    List<Player> playerList = repository.listEndNodes("叶小南", Like.class, Player.class);
+    System.out.println(JSON.toJSONString(playerList));
   }
 
   @Test
@@ -516,6 +607,13 @@ public class NebulaBasicDaoTests {
   @Test
   public void shortestPath() {
     List<NgPath<String>> ngPaths = repository.shortestPath("吴小极", "刘小洲");
+    System.out.println(JSON.toJSONString(ngPaths));
+  }
+
+  @Test
+  public void shortestOptionalPath() {
+    List<NgPath<String>> ngPaths = repository.shortestOptionalPath("吴小极", "刘小洲",
+            Arrays.asList("like"),"BIDIRECT");
     System.out.println(JSON.toJSONString(ngPaths));
   }
   // endregion
@@ -530,5 +628,23 @@ public class NebulaBasicDaoTests {
   private int randomAge() {
     double randomAge = Math.random() * 140;
     return (int) randomAge;
+  }
+
+  @Test
+  public void showSpacesTest() {
+    List<String> spaces = repository.showSpaces();
+    System.out.println(spaces);
+  }
+  
+  @Test
+  public void selectPath() {
+    List<NgPath<String>> paths = repository.selectPath();
+    System.out.println(JSON.toJSONString(paths));
+  }
+  
+  @Test
+  public void testValueFmtWhenNull() {
+    String nullValue = repository.testValueFmtWhenNull(null);
+    Assert.isTrue(nullValue == null);
   }
 }
