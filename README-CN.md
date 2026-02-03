@@ -89,7 +89,7 @@ This source code is licensed under Apache 2.0 License.
 - Gradle
 
     ```groovy
-    implementation 'org.nebula-contrib:ngbatis:1.3.0'
+    implementation 'org.nebula-contrib:ngbatis:1.3.0-jdk17'
     ```
 
 ### 参考 [【ngbatis-demo】](./ngbatis-demo)，与springboot无缝集成。在该项目的 test 中还有api的样例。在开发过程中每增加一个特性也都会同步更新ngbatis-demo的用例
