@@ -4,10 +4,10 @@ import static org.nebula.contrib.ngbatis.utils.ReflectUtil.getNameByColumn;
 import static org.nebula.contrib.ngbatis.utils.ReflectUtil.getValue;
 
 import com.vesoft.nebula.client.graph.data.ResultSet;
+import jakarta.persistence.Id;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.Id;
 import org.nebula.contrib.ngbatis.ArgsResolver;
 import org.nebula.contrib.ngbatis.Env;
 import org.nebula.contrib.ngbatis.ResultResolver;

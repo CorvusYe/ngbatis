@@ -4,7 +4,7 @@ package ye.weicheng.ngbatis.demo.pojo.vertex;
 //
 // This source code is licensed under Apache 2.0 License.
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 import org.nebula.contrib.ngbatis.annotations.base.Tag;
 import org.nebula.contrib.ngbatis.base.GraphBaseVertex;
 

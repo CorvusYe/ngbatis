@@ -4,7 +4,7 @@ package ye.weicheng.ngbatis.demo.pojo.edge;
 //
 // This source code is licensed under Apache 2.0 License.
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 import org.nebula.contrib.ngbatis.annotations.DstId;
 import org.nebula.contrib.ngbatis.annotations.SrcId;
 import org.nebula.contrib.ngbatis.annotations.base.EdgeType;

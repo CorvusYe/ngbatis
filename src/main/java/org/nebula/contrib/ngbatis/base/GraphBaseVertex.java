@@ -10,12 +10,12 @@ import static org.nebula.contrib.ngbatis.utils.ReflectUtil.getNameByColumn;
 import static org.nebula.contrib.ngbatis.utils.ReflectUtil.getValue;
 
 import com.vesoft.nebula.client.graph.data.ResultSet;
+import jakarta.persistence.Id;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.Id;
 import org.nebula.contrib.ngbatis.annotations.base.Tag;
 import org.nebula.contrib.ngbatis.enums.Direction;
 import org.nebula.contrib.ngbatis.enums.IdType;

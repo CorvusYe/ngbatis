@@ -10,8 +10,8 @@ import static org.nebula.contrib.ngbatis.SessionDispatcher.addSpaceToSessionPool
 import static org.nebula.contrib.ngbatis.proxy.MapperProxy.ENV;
 import static org.nebula.contrib.ngbatis.utils.ReflectUtil.typeArg;
 
+import jakarta.persistence.Table;
 import java.util.Map;
-import javax.persistence.Table;
 import org.nebula.contrib.ngbatis.annotations.Space;
 import org.nebula.contrib.ngbatis.exception.ResourceLoadException;
 import org.nebula.contrib.ngbatis.models.ClassModel;
